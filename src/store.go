@@ -61,3 +61,44 @@ func (s *Store) Delete(key string) error {
 
 	return err
 }
+
+// MGet reads multiple entries from the Store-Map
+func (s *Store) MGet(keys []string) map[string]interface{} {
+	cmap := make(map[string]interface{})
+
+	for _, key := range keys {
+		cmap[key] = s.Map[key]
+	}
+
+	return cmap
+}
+
+// MSet adds multiple kkey value pair on the Store-Map
+func (s *Store) MSet(pairs map[string]interface{}) error {
+	var err error
+
+	for key, val := range pairs {
+		s.Map[key] = val
+	}
+
+	// If data persistence is true and snapshot false
+	// Anotherwords, have to write data to the disk
+	if s.Persist && !s.Snapshot {
+		// Write data to Disk
+	}
+
+	return err
+}
+
+// Flush deletes all key value pairs
+func (s *Store) Flush() error {
+	var err error
+	s.Map = make(map[string]interface{})
+
+	// Again, if data persistence is true and snapshot false
+	if s.Persist && !s.Snapshot {
+		// Write data to Disk
+	}
+
+	return err
+}
