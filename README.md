@@ -35,3 +35,12 @@ Dictionaries
 > Write to Map
 > Write to FS
 > Return Stored Data
+
+[https://redis.io/topics/protocol](https://redis.io/topics/protocol)
+
+# Simple Strings => "+OK\r\n#key1"
+<!-- # Errors => "-Error message\r\n" -->
+# Integers => ":1000\r\n#key1"
+# Bulk Strings (Binary) => "$6\r\nfoobar\r\n#key1"
+
+## "#key1\r\n+OK\r\n"
