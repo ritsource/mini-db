@@ -6,37 +6,67 @@ import (
 )
 
 // HandleProtocol parses message recieved from client
-func HandleProtocol(bs []byte) (string, string, []interface{}, error) {
-	var vals []interface{}
+func HandleProtocol(bs []byte) (string, string, interface{}, error) {
+	var val interface{}
 	var err error
 
 	bss := bytes.Split(bs, []byte("\r\n"))
 
 	cmd := bss[0]   // Command, GET / SET / DELETE
 	key := bss[1]   // Key
-	data := bss[2:] // Slice of Values
+	rest := bss[2:] // Slice of Values
 
-	// Iretating because, value only be parsed if it contains one
-	for _, bs := range data {
-		if len(bs) > 0 {
-			switch bs[0] {
-			case byte('+'):
-				vals = append(vals, string(bs[1:])) // For "+" (string type)
-			case byte(':'):
-				val, err := strconv.Atoi(string(bs[1:])) // For ":" (interger type)
-				if err != nil {
-					break
-				}
-				vals = append(vals, val)
-			case byte('$'):
-				vals = append(vals, bs[1:]) // For "-" (binary / []byte type)
-			}
+	if len(rest[0]) > 0 {
+		switch rest[0][0] {
+		case byte('+'):
+			val = handleStr(&rest) // For "+" (string type)
+		case byte(':'):
+			val, err = strconv.Atoi(string(rest[0][1:])) // For ":" (interger type)
+			break
+		case byte('$'):
+			val = handleBin(&rest) // For "$" (binary / []byte type)
 		}
 	}
 
 	if err != nil {
-		return "", "", vals, err
+		return "", "", val, err
 	}
 
-	return string(cmd), string(key), vals, err
+	return string(cmd), string(key), val, err
 }
+
+// handleStr
+func handleStr(rest *[][]byte) string {
+	var val string
+	for i, r := range *rest {
+		if i != len(*rest)-1 {
+			if i == 0 {
+				val += string(r[1:])
+			} else {
+				val += (" " + string(r[1:]))
+			}
+		}
+	}
+
+	return val
+}
+
+func handleBin(rest *[][]byte) []byte {
+	var val []byte
+	for i, r := range *rest {
+		if i != len(*rest)-1 {
+			if i == 0 {
+				val = append(val, r[1:]...)
+			} else {
+				val = append(val, byte(' '))
+				val = append(val, r[1:]...)
+			}
+		}
+	}
+
+	return val
+}
+
+// func handleInt() {
+
+// }

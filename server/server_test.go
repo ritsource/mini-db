@@ -55,4 +55,13 @@ func TestHandleMsg(t *testing.T) {
 	if d4["error"] == nil {
 		t.Error("d4[\"error\"] == nil", d4["error"], "or unable to delete file")
 	}
+
+	// Testing SET-Command where value contains string
+	bs5 := server.HandleMsg([]byte("SET\r\nkey1\r\n+Ritwik\r\n+Saha\r\n"))
+	d5, err := src.UnmarshalData(bs5)
+	handleErr(t, err)
+
+	if d5["error"] != nil {
+		t.Error("d1[\"error\"] != nil")
+	}
 }
