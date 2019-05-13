@@ -1,17 +1,26 @@
 package server
 
 import (
+	"bytes"
+	"encoding/gob"
 	"fmt"
-	"io"
-	"io/ioutil"
 	"net"
 
 	"github.com/ritwik310/mini-db/src"
 )
 
-// Start ...
+var store src.Store
+
+func init() {
+	// Initializing store
+	store = src.Store{Persist: false}
+	store.Map = make(map[string]interface{})
+}
+
+// Start starts a tcp server on specified port, default :8080.
+// A client can send write to the TCP connection to manipulate data
 func Start() error {
-	// Starting TCP Server
+	// Starting TCP-Server
 	ln, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		return err
@@ -20,58 +29,84 @@ func Start() error {
 
 	fmt.Println("Server Started...")
 
-	// Looking for Events
 	for {
 		conn, err := ln.Accept()
 		if err != nil {
-			return err
+			panic(err)
 		}
 
-		bs, err := ioutil.ReadAll(conn)
-		if err != nil {
-			fmt.Println("Error:", err)
-		}
-
-		if len(bs) > 0 {
-			handleEvent(conn, bs)
-		}
-
-		conn.Close()
+		go handleConnection(conn) // Connection requests
 	}
 }
 
-// handleEvent
-
-func writeToClient(conn io.Writer, str string) {
-	_, err2 := io.WriteString(conn, str)
-	if err2 != nil {
-		fmt.Println("Server Error:", err2)
-	}
-}
-
-func handleEvent(conn io.Writer, bs []byte) {
-	cmd, key, val, err := src.HandleProtocol(bs)
-
-	// Writing error to the client
+// handleConnection takes care of reading data from connection
+// and writing the appropriate message (Error, Query)
+func handleConnection(conn net.Conn) {
+	// Reading connection data
+	bs := make([]byte, 512)
+	_, err := conn.Read(bs)
 	if err != nil {
+		conn.Write([]byte("Error: " + err.Error()))
 		fmt.Println("Error:", err)
 		return
 	}
 
-	var query interface{}
-	fmt.Println("Parts:", cmd, key, val)
+	// If message exists on connection
+	if len(bs) > 0 {
+		wbs := HandleMsg(bs) // Handling data from client, wbs => writable data
 
-	store := src.Store{Persist: false}
-	store.Map = make(map[string]interface{})
-
-	switch cmd {
-	case "SET":
-		err = store.Set(key, val)
-	case "GET":
-		query, err = store.Get(key)
-	case "DELETE":
-		err = store.Delete(key)
+		// Writing response data (Error, Query)
+		_, err = conn.Write(wbs)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
 	}
 
-	fmt.Println("Result:", store.Map["key1"], query)
+	conn.Close() // Closing connection
+}
+
+// HandleMsg parses message data passed by client
+// and does the specified query or insert or ...
+func HandleMsg(bs []byte) []byte {
+	// Parsing message data
+	cmd, key, val, err := src.HandleProtocol(bs)
+	if err != nil {
+		return []byte("Error: " + err.Error())
+	}
+
+	// Doing the specified task in the message
+	switch cmd {
+	case "SET":
+		// If SET-cmd
+		err = store.Set(key, val)
+		if err != nil {
+			return []byte("Error: " + err.Error())
+		}
+	case "GET":
+		// If GET-cmd
+		newval, err := store.Get(key)
+		if err != nil {
+			return []byte("Error: " + err.Error())
+		}
+
+		// Converting data into []bytes to return
+		var buf bytes.Buffer
+		enc := gob.NewEncoder(&buf)
+		if err := enc.Encode(newval); err != nil {
+			return []byte("Error: " + err.Error())
+		}
+
+		return buf.Bytes()
+
+	case "DELETE":
+		// If DELETE-cmd
+		err = store.Delete(key)
+		if err != nil {
+			return []byte("Error: " + err.Error())
+		}
+	default:
+		return []byte("Error: command not found")
+	}
+
+	return nil
 }
