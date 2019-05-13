@@ -16,28 +16,18 @@ func Start() {
 
 	for {
 		fmt.Print("$ ")
-		cmdStr, err := reader.ReadString('\n')
+		cmdStr, err := reader.ReadString('\n') // Reading Input
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 		}
 
-		fstr := formatCmd(cmdStr[0 : len(cmdStr)-1])
-
-		// fmt.Println(fstr)
-		execCmd(fstr)
-		// cmdString = strings.TrimSuffix(cmdString, "\n")
-		// cmd := exec.Command(cmdString)
-		// cmd.Stderr = os.Stderr
-		// cmd.Stdout = os.Stdout
-		// err = cmd.Run()
-		// if err != nil {
-		// 	fmt.Fprintln(os.Stderr, err)
-		// }
+		execCmd(FormatCmd(cmdStr[0 : len(cmdStr)-1])) // Printing response
 	}
 }
 
+// execCmd executes CRUD command, and handles response
 func execCmd(msg string) {
-	bs := server.HandleMsg([]byte(msg))
+	bs := server.HandleMsg([]byte(msg)) // Executing CRUD
 	d, err := src.UnmarshalData(bs)
 	if err != nil {
 		fmt.Println("Error:", err)
@@ -45,7 +35,7 @@ func execCmd(msg string) {
 	}
 
 	if d["error"] != nil {
-		fmt.Println(err)
+		fmt.Println("Error:", d["error"])
 		return
 	}
 
@@ -55,7 +45,8 @@ func execCmd(msg string) {
 	}
 }
 
-func formatCmd(str string) string {
+// FormatCmd formats the shell-command into formatted message in protocol format
+func FormatCmd(str string) string {
 	str = strings.TrimSpace(str)
 	str = strings.Join(strings.Fields(str), " ")
 	strsl := strings.Split(str, " ")
@@ -86,9 +77,11 @@ func formatWidTyp(strsl []string) string {
 	typEl := strsl[len(strsl)-1]
 
 	if len(typEl) >= 5 && typEl[0:2] == "--" {
-		switch typEl[2:6] {
-		// case "str":
-		// 	typ = "+"
+		strsl = strsl[:len(strsl)-1]
+
+		switch typEl[2:5] {
+		case "str":
+			typ = "+"
 		case "int":
 			typ = ":"
 		case "bin":

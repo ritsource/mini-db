@@ -64,13 +64,19 @@ func handleConnection(conn net.Conn) {
 	conn.Close() // Closing connection
 }
 
+// buildResponse builds response map to be sent
 func buildResponse(st int, d interface{}, er error) []byte {
-	resmap := map[string]interface{}{
-		"status": st,
-		"data":   d,
-		"error":  er,
+	resmap := map[string]interface{}{}
+
+	resmap["status"] = st
+	resmap["data"] = d
+	if er != nil {
+		resmap["error"] = er.Error()
+	} else {
+		resmap["error"] = nil
 	}
 
+	// Convert to []byte
 	bs, err := src.MarshalData(&resmap)
 	if err != nil {
 		return []byte("Error: " + err.Error())
