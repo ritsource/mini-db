@@ -92,7 +92,7 @@ func HandleMsg(bs []byte) []byte {
 	switch cmd {
 	case "SET":
 		// If SET-cmd
-		err = store.Set(key, val)
+		err = store.Set(key, val[0])
 		if err != nil {
 			return buildResponse(400, nil, err)
 		}

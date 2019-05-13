@@ -1,14 +1,11 @@
 package main
 
-import (
-	"fmt"
-	"strings"
-)
+import "github.com/ritwik310/mini-db/shell"
 
 func main() {
 	// server.Start()
-	// shell.Start()
+	shell.Start()
 
-	sl := strings.Split("GET\r\nkey\r\n", "\r\n")
-	fmt.Println("S", sl[2:])
+	// sl := strings.Split("GET\r\nkey\r\n", "\r\n")
+	// fmt.Println("S", sl[2:])
 }
