@@ -10,11 +10,6 @@ import (
 func Test(t *testing.T) {
 	go server.Start()
 
-	defer (func() {
-		t.SkipNow()
-		server.Close()
-	})()
-
 	mdb := client.New("tcp", "localhost:8080")
 
 	resp1, err := mdb.Set("myname", "Ritwik Saha", "str")
