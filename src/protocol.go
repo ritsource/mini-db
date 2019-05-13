@@ -2,45 +2,40 @@ package src
 
 import (
 	"bytes"
-	"errors"
 	"strconv"
 )
 
-// Only in dev!
-func checkFormat(bss [][]byte) error {
-	if (string(bss[0]) == "SET" || string(bss[0]) == "HSET") && len(bss) < 3 {
-		return errors.New("Not enough arguements in message")
-	} else if len(bss) < 2 {
-		return errors.New("Not enough arguements in message")
-	}
-
-	return nil
-}
-
 // HandleProtocol parses event message
-func HandleProtocol(bs []byte) (string, string, interface{}, error) {
-	var val interface{}
+func HandleProtocol(bs []byte) (string, string, []interface{}, error) {
+	var vals []interface{}
+	var err error
+
 	bss := bytes.Split(bs, []byte("\r\n"))
-	err := checkFormat(bss)
-	if err != nil {
-		return "", "", "", err
-	}
 
 	cmd := bss[0]
 	key := bss[1]
+	data := bss[2:]
 
-	switch bss[2][0] {
-	case byte('+'):
-		val = string(bss[2][1:])
-	case byte(':'):
-		val, err = strconv.Atoi(string(bss[2][1:]))
-	case byte('$'):
-		val = bss[2][1:]
+	for _, bs := range data {
+		if len(bs) > 0 {
+			switch bs[0] {
+			case byte('+'):
+				vals = append(vals, string(bs[1:]))
+			case byte(':'):
+				val, err := strconv.Atoi(string(bs[1:]))
+				if err != nil {
+					break
+				}
+				vals = append(vals, val)
+			case byte('$'):
+				vals = append(vals, bs[1:])
+			}
+		}
 	}
 
 	if err != nil {
-		return "", "", "", err
+		return "", "", vals, err
 	}
 
-	return string(cmd), string(key), val, err
+	return string(cmd), string(key), vals, err
 }
