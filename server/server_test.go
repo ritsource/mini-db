@@ -1,7 +1,6 @@
 package server_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/ritwik310/mini-db/server"
@@ -35,8 +34,6 @@ func TestHandleMsg(t *testing.T) {
 		t.Error("d2[\"data\"] != \"OK\"")
 	}
 
-	// TODO: BUG HERE
-
 	// Testing DELETE-Command
 	bs3 := server.HandleMsg([]byte("DELETE\r\nkey1\r\n"))
 	d3, err := src.UnmarshalData(bs3)
@@ -50,7 +47,6 @@ func TestHandleMsg(t *testing.T) {
 	bs4 := server.HandleMsg([]byte("GET\r\nkey1\r\n"))
 	d4, err := src.UnmarshalData(bs4)
 	handleErr(t, err)
-	fmt.Println("d4[\"error\"]", d4["error"])
 
 	if d4["error"] == nil {
 		t.Error("d4[\"error\"] == nil", d4["error"], "or unable to delete file")

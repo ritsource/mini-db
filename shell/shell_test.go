@@ -8,9 +8,8 @@ import (
 
 func TestFormatCmd(t *testing.T) {
 	assertionMap := map[string]string{
-		"SET key1 value1":      "SET\r\nkey1\r\n+value1\r\n",
-		"SET key1 Ritwik Saha": "SET\r\nkey1\r\n+Ritwik\r\n+Saha\r\n",
-		// "SET key1 Ritwik Saha":  "SET\r\nkey1\r\n+Ritwik Saha\r\n",
+		"SET key1 value1":       "SET\r\nkey1\r\n+value1\r\n",
+		"SET key1 Ritwik Saha":  "SET\r\nkey1\r\n+Ritwik\r\n+Saha\r\n",
 		"SET key1 value1 --str": "SET\r\nkey1\r\n+value1\r\n",
 		"SET key1 80 --integer": "SET\r\nkey1\r\n:80\r\n",
 		"SET key1 88 --int":     "SET\r\nkey1\r\n:88\r\n",
