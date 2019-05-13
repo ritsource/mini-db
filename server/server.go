@@ -9,6 +9,7 @@ import (
 )
 
 var store src.Store
+var ln net.Listener
 
 func init() {
 	// Initializing store
@@ -36,6 +37,11 @@ func Start() error {
 
 		go handleConnection(conn) // Connection requests
 	}
+}
+
+// Close closes the currently running TCP listener
+func Close() {
+	ln.Close()
 }
 
 // handleConnection takes care of reading data from connection
