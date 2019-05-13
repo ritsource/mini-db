@@ -1,8 +1,7 @@
 package server
 
 import (
-	"bytes"
-	"encoding/gob"
+	"errors"
 	"fmt"
 	"net"
 
@@ -65,6 +64,21 @@ func handleConnection(conn net.Conn) {
 	conn.Close() // Closing connection
 }
 
+func buildResponse(st int, d interface{}, er error) []byte {
+	resmap := map[string]interface{}{
+		"status": st,
+		"data":   d,
+		"error":  er,
+	}
+
+	bs, err := src.MarshalData(&resmap)
+	if err != nil {
+		return []byte("Error: " + err.Error())
+	}
+
+	return bs
+}
+
 // HandleMsg parses message data passed by client
 // and does the specified query or insert or ...
 func HandleMsg(bs []byte) []byte {
@@ -80,33 +94,24 @@ func HandleMsg(bs []byte) []byte {
 		// If SET-cmd
 		err = store.Set(key, val)
 		if err != nil {
-			return []byte("Error: " + err.Error())
+			return buildResponse(400, nil, err)
 		}
 	case "GET":
 		// If GET-cmd
 		newval, err := store.Get(key)
 		if err != nil {
-			return []byte("Error: " + err.Error())
+			return buildResponse(400, nil, err)
 		}
-
-		// Converting data into []bytes to return
-		var buf bytes.Buffer
-		enc := gob.NewEncoder(&buf)
-		if err := enc.Encode(newval); err != nil {
-			return []byte("Error: " + err.Error())
-		}
-
-		return buf.Bytes()
-
+		return buildResponse(200, newval, nil)
 	case "DELETE":
 		// If DELETE-cmd
 		err = store.Delete(key)
 		if err != nil {
-			return []byte("Error: " + err.Error())
+			return buildResponse(400, nil, err)
 		}
 	default:
-		return []byte("Error: command not found")
+		return buildResponse(400, nil, errors.New("Error: command not found"))
 	}
 
-	return nil
+	return buildResponse(200, nil, nil)
 }

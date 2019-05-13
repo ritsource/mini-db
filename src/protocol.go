@@ -6,8 +6,6 @@ import (
 	"strconv"
 )
 
-// "SET\r\nkey1\r\n+OK\r\n"
-
 // Only in dev!
 func checkFormat(bss [][]byte) error {
 	if (string(bss[0]) == "SET" || string(bss[0]) == "HSET") && len(bss) < 3 {
@@ -33,11 +31,10 @@ func HandleProtocol(bs []byte) (string, string, interface{}, error) {
 
 	switch bss[2][0] {
 	case byte('+'):
-		val = handleStr(bss[2][1:])
+		val = string(bss[2][1:])
 	case byte(':'):
-		val, err = handleInt(bss[2][1:])
+		val, err = strconv.Atoi(string(bss[2][1:]))
 	case byte('$'):
-		// val = handleBin(bss[2][1:])
 		val = bss[2][1:]
 	}
 
@@ -46,16 +43,4 @@ func HandleProtocol(bs []byte) (string, string, interface{}, error) {
 	}
 
 	return string(cmd), string(key), val, err
-}
-
-func handleStr(bs []byte) string {
-	return string(bs)
-}
-
-func handleInt(bs []byte) (int, error) {
-	return strconv.Atoi(string(bs))
-}
-
-func handleBin(bs []byte) []byte {
-	return bs
 }
