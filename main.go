@@ -5,12 +5,7 @@ import (
 )
 
 func main() {
-	server.Start()
-
-	// time.Sleep(time.Second * 5)
-	// server.Close()
-	// // shell.Start()
-
-	// sl := strings.Split("GET\r\nkey\r\n", "\r\n")
-	// fmt.Println("S", sl[2:])
+	// cmd.Execute()
+	// shell.Start()
+	server.Start("8080", true, 5, "mydata.out")
 }

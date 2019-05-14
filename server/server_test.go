@@ -14,8 +14,11 @@ func handleErr(t *testing.T, err error) {
 }
 
 func TestHandleMsg(t *testing.T) {
+	store := src.Store{Persist: false}
+	store.Map = make(map[string]interface{})
+
 	// Testing SET-Command hanlding
-	bs1 := server.HandleMsg([]byte("SET\r\nkey1\r\n+OK\r\n"))
+	bs1 := server.HandleMsg(&store, []byte("SET\r\nkey1\r\n+OK\r\n"))
 	d1, err := src.UnmarshalData(bs1)
 	handleErr(t, err)
 
@@ -24,7 +27,7 @@ func TestHandleMsg(t *testing.T) {
 	}
 
 	// Testing GET-Command hanlding
-	bs2 := server.HandleMsg([]byte("GET\r\nkey1\r\n"))
+	bs2 := server.HandleMsg(&store, []byte("GET\r\nkey1\r\n"))
 	d2, err := src.UnmarshalData(bs2)
 	handleErr(t, err)
 
@@ -35,7 +38,7 @@ func TestHandleMsg(t *testing.T) {
 	}
 
 	// Testing DELETE-Command
-	bs3 := server.HandleMsg([]byte("DELETE\r\nkey1\r\n"))
+	bs3 := server.HandleMsg(&store, []byte("DELETE\r\nkey1\r\n"))
 	d3, err := src.UnmarshalData(bs3)
 	handleErr(t, err)
 
@@ -44,7 +47,7 @@ func TestHandleMsg(t *testing.T) {
 	}
 
 	// Testing SET-Cmd for non existing key
-	bs4 := server.HandleMsg([]byte("GET\r\nkey1\r\n"))
+	bs4 := server.HandleMsg(&store, []byte("GET\r\nkey1\r\n"))
 	d4, err := src.UnmarshalData(bs4)
 	handleErr(t, err)
 
@@ -53,7 +56,7 @@ func TestHandleMsg(t *testing.T) {
 	}
 
 	// Testing SET-Command where value contains string
-	bs5 := server.HandleMsg([]byte("SET\r\nkey1\r\n+Ritwik\r\n+Saha\r\n"))
+	bs5 := server.HandleMsg(&store, []byte("SET\r\nkey1\r\n+Ritwik\r\n+Saha\r\n"))
 	d5, err := src.UnmarshalData(bs5)
 	handleErr(t, err)
 

@@ -2,6 +2,10 @@ package src
 
 import (
 	"errors"
+	"fmt"
+	"os/user"
+	"path"
+	"time"
 )
 
 // Store contains all the data
@@ -15,9 +19,47 @@ type Store struct {
 	// Snapshot is only useul if Persist == true
 	Snapshot bool
 	// Delay is the time delay for each data snapshot
-	Delay float64
+	Delay time.Duration
 	// Map stores all the key value pairs in-memory
 	Map map[string]interface{}
+}
+
+// Init initializes store, reads data from output file,
+// and concurrently runs a function that saves data to output in specific time delay
+func (s *Store) Init(persist bool, delay int, output string) {
+	// If persist == true, If data needs to be saved in fs
+	if persist {
+		// Setup output = default output if not provided
+		if output == "" {
+			usr, err := user.Current() // Current user in the OS
+			if err != nil {
+				panic(err)
+			}
+			output = path.Join(usr.HomeDir, ".minidb", "data.out") // Output path, default
+		}
+
+		// Initializing store instance
+		*s = Store{Persist: persist}  // defining store instance
+		rmap, err := ReadFile(output) // Reading data from output file to popultate previously saved data
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+		s.Map = rmap // Populating store.Map
+
+		// Backing up data in FS in provided time delay
+		for {
+			time.Sleep(time.Second * time.Duration(delay))
+
+			err := WriteFile(output, s.Map) // Writing data to FS
+			if err != nil {
+				panic(err)
+			}
+		}
+	} else {
+		// If persist == false,
+		store := Store{Persist: false}
+		store.Map = make(map[string]interface{})
+	}
 }
 
 // Get reads data from the Store-Map

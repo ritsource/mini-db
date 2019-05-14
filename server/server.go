@@ -8,20 +8,17 @@ import (
 	"github.com/ritwik310/mini-db/src"
 )
 
+// Store instance that conatins all the in-memory data
 var store src.Store
-var ln net.Listener
-
-func init() {
-	// Initializing store
-	store = src.Store{Persist: false}
-	store.Map = make(map[string]interface{})
-}
 
 // Start starts a tcp server on specified port, default :8080.
 // A client can send write to the TCP connection to manipulate data
-func Start() error {
+func Start(port string, persist bool, delay int, output string) error {
+	//  Initializing store
+	go store.Init(persist, delay, output)
+
 	// Starting TCP-Server
-	ln, err := net.Listen("tcp", ":8080")
+	ln, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		return err
 	}
@@ -39,11 +36,6 @@ func Start() error {
 	}
 }
 
-// Close closes the currently running TCP listener
-func Close() {
-	ln.Close()
-}
-
 // handleConnection takes care of reading data from connection
 // and writing the appropriate message (Error, Query)
 func handleConnection(conn net.Conn) {
@@ -58,7 +50,7 @@ func handleConnection(conn net.Conn) {
 
 	// If message exists on connection
 	if len(bs) > 0 {
-		wbs := HandleMsg(bs) // Handling data from client, wbs => writable data
+		wbs := HandleMsg(&store, bs) // Handling data from client, wbs => writable data
 
 		// Writing response data (Error, Query)
 		_, err = conn.Write(wbs)
@@ -93,7 +85,7 @@ func buildResponse(st int, d interface{}, er error) []byte {
 
 // HandleMsg parses message data passed by client
 // and does the specified query or insert or ...
-func HandleMsg(bs []byte) []byte {
+func HandleMsg(st *src.Store, bs []byte) []byte {
 	// Parsing message data
 	cmd, key, val, err := src.HandleProtocol(bs)
 	if err != nil {
@@ -104,20 +96,20 @@ func HandleMsg(bs []byte) []byte {
 	switch cmd {
 	case "SET":
 		// If SET-cmd
-		err = store.Set(key, val)
+		err = st.Set(key, val)
 		if err != nil {
 			return buildResponse(400, nil, err)
 		}
 	case "GET":
 		// If GET-cmd
-		newval, err := store.Get(key)
+		newval, err := st.Get(key)
 		if err != nil {
 			return buildResponse(400, nil, err)
 		}
 		return buildResponse(200, newval, nil)
 	case "DELETE":
 		// If DELETE-cmd
-		err = store.Delete(key)
+		err = st.Delete(key)
 		if err != nil {
 			return buildResponse(400, nil, err)
 		}

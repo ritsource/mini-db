@@ -10,6 +10,13 @@ import (
 	"github.com/ritwik310/mini-db/src"
 )
 
+var store src.Store
+
+func init() {
+	store = src.Store{Persist: false}
+	store.Map = make(map[string]interface{})
+}
+
 // Start ..
 func Start() {
 	reader := bufio.NewReader(os.Stdin)
@@ -27,7 +34,7 @@ func Start() {
 
 // execCmd executes CRUD command, and handles response
 func execCmd(msg string) {
-	bs := server.HandleMsg([]byte(msg)) // Executing CRUD
+	bs := server.HandleMsg(&store, []byte(msg)) // Executing CRUD
 	d, err := src.UnmarshalData(bs)
 	if err != nil {
 		fmt.Println("Error:", err)
