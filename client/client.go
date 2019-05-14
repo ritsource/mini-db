@@ -16,13 +16,16 @@ func New(network, address string) Client {
 	}
 }
 
-// Client contains CRUD methods
+// Client contains Get, Set, and Delete methods
+// necessary for interacting with the corrosponding server and manipulating data
 type Client struct {
-	Network string
-	Address string
+	Network string // Network type (TCP)
+	Address string // Server address
 }
 
-// Get queries data from server
+// Get creates a TCP-connection to the corrosponding server
+// and queries data from it given a valid key
+// Example: resp, err := mdb.Get("myname")
 func (c *Client) Get(key string) (map[string]interface{}, error) {
 	// New TCP-connection to the server
 	conn, err := net.Dial(c.Network, c.Address)
@@ -38,7 +41,9 @@ func (c *Client) Get(key string) (map[string]interface{}, error) {
 	return handleResponse(&conn) // Returning server response
 }
 
-// Set inserts data in server
+// Set creates a TCP-connection to the server
+// and inserts data into it
+// Example: resp, err := mdb.Set("myname", "Ritwik Saha", "str")
 func (c *Client) Set(key, val, typ string) (map[string]interface{}, error) {
 	// New TCP-connection to the server
 	conn, err := net.Dial(c.Network, c.Address)
@@ -55,7 +60,9 @@ func (c *Client) Set(key, val, typ string) (map[string]interface{}, error) {
 	return handleResponse(&conn) // Returning server response
 }
 
-// Delete deletes key from the server
+// Delete creates a TCP-connection to the server
+// and deletes data from it
+// Example: resp, err := mdb.Delete("myname")
 func (c *Client) Delete(key string) (map[string]interface{}, error) {
 	// New TCP-connection to the server
 	conn, err := net.Dial(c.Network, c.Address)

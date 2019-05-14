@@ -67,6 +67,7 @@ func FormatCmd(str string) string {
 	return ""
 }
 
+// Formats Message-string for Commands that doesn't include type declearation
 func formatNoTyp(strsl []string) string {
 	var fstr string
 	for _, s := range strsl {
@@ -76,6 +77,7 @@ func formatNoTyp(strsl []string) string {
 	return fstr
 }
 
+// Formats Message-string for Commands with type declearation
 func formatWidTyp(strsl []string) string {
 	var typ string
 	typEl := strsl[len(strsl)-1]

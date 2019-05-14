@@ -35,7 +35,7 @@ func HandleProtocol(bs []byte) (string, string, interface{}, error) {
 	return string(cmd), string(key), val, err
 }
 
-// handleStr
+// handleStr creats string from rest of the elements of bss[2:] (excluding for command and key)
 func handleStr(rest *[][]byte) string {
 	var val string
 	for i, r := range *rest {
@@ -51,6 +51,7 @@ func handleStr(rest *[][]byte) string {
 	return val
 }
 
+// handleBin handles binary for rest of the elements in bss[2:0]
 func handleBin(rest *[][]byte) []byte {
 	var val []byte
 	for i, r := range *rest {
@@ -66,7 +67,3 @@ func handleBin(rest *[][]byte) []byte {
 
 	return val
 }
-
-// func handleInt() {
-
-// }
