@@ -15,7 +15,7 @@ var store src.Store
 // A client can send write to the TCP connection to manipulate data
 func Start(port string, persist bool, delay int, output string) error {
 	//  Initializing store
-	go store.Init(persist, delay, output)
+	store.Init(persist, delay, output)
 
 	// Starting TCP-Server
 	ln, err := net.Listen("tcp", ":"+port)

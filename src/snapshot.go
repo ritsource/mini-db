@@ -3,12 +3,20 @@ package src
 import (
 	"bytes"
 	"encoding/gob"
+	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 )
 
 // WriteFile writes a file and dumps given data into it
 func WriteFile(fpath string, d map[string]interface{}) error {
+	err := os.MkdirAll(filepath.Dir(fpath), 0777) // Creates all the filders
+	if err != nil {
+		fmt.Println("ERRRRR:", err)
+		return err
+	}
+
 	// Create file
 	file, err := os.Create(fpath)
 	if err != nil {

@@ -42,23 +42,25 @@ func (s *Store) Init(persist bool, delay int, output string) {
 		*s = Store{Persist: persist}  // defining store instance
 		rmap, err := ReadFile(output) // Reading data from output file to popultate previously saved data
 		if err != nil {
-			fmt.Println("Error:", err)
+			fmt.Println(err)
 		}
 		s.Map = rmap // Populating store.Map
 
 		// Backing up data in FS in provided time delay
-		for {
-			time.Sleep(time.Second * time.Duration(delay))
+		go (func(st *Store) {
+			for {
+				time.Sleep(time.Second * time.Duration(delay))
 
-			err := WriteFile(output, s.Map) // Writing data to FS
-			if err != nil {
-				panic(err)
+				err := WriteFile(output, s.Map) // Writing data to FS
+				if err != nil {
+					panic(err)
+				}
 			}
-		}
+		})(s)
 	} else {
 		// If persist == false,
-		store := Store{Persist: false}
-		store.Map = make(map[string]interface{})
+		*s = Store{Persist: false}
+		s.Map = make(map[string]interface{})
 	}
 }
 

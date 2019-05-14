@@ -12,13 +12,10 @@ import (
 
 var store src.Store
 
-func init() {
-	store = src.Store{Persist: false}
-	store.Map = make(map[string]interface{})
-}
-
 // Start ..
-func Start() {
+func Start(persist bool, delay int, output string) {
+	store.Init(persist, delay, output)
+
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
