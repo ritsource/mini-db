@@ -25,9 +25,7 @@ Example: mini-db server -p 8000 --backup
 		}
 
 		// Running the server
-		server.Start(port, backup, delay, output)
-
-		return nil
+		return server.Start(port, backup, delay, output)
 	},
 }
 

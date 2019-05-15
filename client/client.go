@@ -1,32 +1,7 @@
-// MiniDB-Client contains methods to programmatically interacts with the [MiniDB-Server](https://github.com/ritwik310/mini-db).
-// ```
-// package main
+/*
+MiniDB-Client contains methods to programmatically interacts with the MiniDB-Server.
 
-// import (
-//     "fmt"
-//     "github.com/ritwik310/mini-db/client"
-// )
-
-// func main() {
-//     // Create a client instance (mdb)
-//     mdb := client.New("tcp", "localhost:8000") // By default the MiniDB-Server listens on Port-8000
-
-//     // Communicating to the Server
-//     resp0, err := mdb.Set("myname", "Ritwik Saha", "str") // "myname" => key, "Ritwik Saha" => value, "str" => data-type
-//     resp1, err := mdb.Get("myname")
-//     resp2, err := mdb.Delete("myname")
-//     resp3, err := mdb.Get("myname")
-
-//     if err != nil {
-//         fmt.Println("Error:", err)
-//     }
-
-//     fmt.Printf("resp0: %+v\n", resp0) // resp0["status"] == 200
-//     fmt.Printf("resp1: %+v\n", resp1) // resp1["data"] == "Ritwik Saha"
-//     fmt.Printf("resp2: %+v\n", resp2) // resp2["status"] == 200
-//     fmt.Printf("resp3: %+v\n", resp3) // resp3["error"] != nil && resp3["status"] == 400
-// }
-// ```
+*/
 
 package client
 
@@ -38,7 +13,8 @@ import (
 	"github.com/ritwik310/mini-db/src"
 )
 
-// New returns a new Client, that interacts with the server
+// New returns a new Client, that contains Get, Set, and Delete function
+// to interact with the MiniDB-Server running on the specified address.
 func New(network, address string) Client {
 	return Client{
 		Network: network,
@@ -46,16 +22,15 @@ func New(network, address string) Client {
 	}
 }
 
-// Client contains Get, Set, and Delete methods
-// necessary for interacting with the corrosponding server and manipulating data
+// Client contains Get, Set, and Delete methods necessary
+// for interacting with the corrosponding MiniDB-Server and manipulating data
 type Client struct {
 	Network string // Network type (TCP)
 	Address string // Server address
 }
 
-// Get creates a TCP-connection to the corrosponding server
+// Get creates a TCP-connection to the corrosponding MiniDB-Server
 // and queries data from it given a valid key
-// Example: resp, err := mdb.Get("myname")
 func (c *Client) Get(key string) (map[string]interface{}, error) {
 	// New TCP-connection to the server
 	conn, err := net.Dial(c.Network, c.Address)
@@ -71,10 +46,16 @@ func (c *Client) Get(key string) (map[string]interface{}, error) {
 	return handleResponse(&conn) // Returning server response
 }
 
-// Set creates a TCP-connection to the server
-// and inserts data into it
-// Example: resp, err := mdb.Set("myname", "Ritwik Saha", "str")
+// Set creates a TCP-connection to the MiniDB-Server and inserts data into it
+// This method has three arguements, key, value and type
+// typ indicates the data type of value. By default its a string,
+// but it also supports integer and binary,
+// Read more about data types, https://github.com/ritwik310/mini-db#data-types
 func (c *Client) Set(key, val, typ string) (map[string]interface{}, error) {
+	// typ = 'str' for string (default, if provided "")
+	// typ = 'int' for integer
+	// typ = 'bin' for binary
+
 	// New TCP-connection to the server
 	conn, err := net.Dial(c.Network, c.Address)
 	if err != nil {
@@ -90,9 +71,7 @@ func (c *Client) Set(key, val, typ string) (map[string]interface{}, error) {
 	return handleResponse(&conn) // Returning server response
 }
 
-// Delete creates a TCP-connection to the server
-// and deletes data from it
-// Example: resp, err := mdb.Delete("myname")
+// Delete creates a TCP-connection to the server and deletes data from it
 func (c *Client) Delete(key string) (map[string]interface{}, error) {
 	// New TCP-connection to the server
 	conn, err := net.Dial(c.Network, c.Address)

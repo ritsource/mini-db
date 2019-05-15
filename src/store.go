@@ -42,7 +42,7 @@ func (s *Store) Init(persist bool, delay int, output string) {
 		*s = Store{Persist: persist}  // defining store instance
 		rmap, err := ReadFile(output) // Reading data from output file to popultate previously saved data
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Unable to read data from file:", err)
 		}
 		s.Map = rmap // Populating store.Map
 
