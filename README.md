@@ -4,17 +4,19 @@
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/ritwik310/mini-db.svg)
 ![Travis (.com)](https://img.shields.io/travis/com/ritwik310/mini-db.svg)
 
-MiniDB is a very simple **in-memory key-value store**, with persistent-storage as an option. ~~Somewhat like~~ Copy of Redis. The application contains an interactive **Shell** to run DB-commands, more about it [here](https://github.com/ritwik310/mini-db). And also a **Golang client** for programmatic interactions remotely, more [here](https://github.com/ritwik310/mini-db).
+MiniDB is a very simple **in-memory key-value store**, with persistent-storage as an option. ~~Somewhat like~~ Copy of Redis. The application contains an interactive **Shell** to run DB-commands, more about it [here](#minidb-shell). And also a **Golang client** for programmatic interactions remotely, more [here](#minidb-server).
 
-> NOTE: MiniDB is not intended to be used as a production application.
+> NOTE: MiniDB is not intended to be used in a production application.
 
-# About
+<!-- # About
 
-Something About The App,
+Something About The App, -->
 
 # Data Types
 
-MiniDB stores key value pairs, and supports 3 types of values - String, Integer, Binary. 
+MiniDB stores **key-value pairs**, and supports **3 types** of values - **String**, **Integer**, **Binary**. To declare type while writing data using **MiniDB-Client** check out [this](https://github.com/ritwik310/mini-db/blob/master/client/README.md#data-type-declaration). And Type declaration in **MiniDB-Shell** has been explained [here](#commands)
+
+> NOTE: If no data-type arguement provided in **Client** or **Shell**, MiniDB will save **String type by default**.
 
 # Installation
 
@@ -24,7 +26,7 @@ Install **MiniDB-Server** using,
 go get github.com/ritwik310/mini-db
 ```
 
-To install the MiniDB Go-client run,
+To install the **MiniDB Go-client** run,
 
 ```shell
 go get github.com/ritwik310/mini-db/client
@@ -32,7 +34,7 @@ go get github.com/ritwik310/mini-db/client
 
 # MiniDB-Server
 
-MiniDB-Server is a **TCP server** that listens on specified port and stores data **in-memory**. Also persists data in a output file too, if option provided. You can insert or get data from the running server, using [client](https://github.com/ritwik310/mini-db) that writes to the TCP connection on provided address.
+MiniDB-Server is a **TCP server** that listens on specified port and stores data **in-memory**. Also persists data in a output file too, if option provided. You can insert or get data from the running server, using [client](#minidb-client) that writes to the TCP connection on provided address.
 
 ### Starting Server
 To start the server run,
@@ -62,7 +64,7 @@ mini-db server --port 8000 --backup --delay 1 --output ./mybackup.out
 
 # MiniDB-Shell
 
-MiniDB-Shell is an **interactive shell** for storing and manipulating key values without starting a Server. You can run [commands](https://github.com/ritwik310/mini-db) in the shell and play with the DB.
+MiniDB-Shell is an **interactive shell** for storing and manipulating key values without starting a Server. You can run [commands](#commands) in the shell and play with the DB.
 
 ### Start Shell
 
@@ -72,7 +74,7 @@ To start **Shell** just run,
 mini-db shell
 ```
 
-The Shell command also shares all the same flags that **Server** does (except for the `--port` flag), [here's](https://github.com/ritwik310/mini-db) the spec reference. And command example,
+The Shell command also shares all the same flags that **Server** does (except for the `--port` flag), [here's](#server-specs) the spec reference. And command example,
 
 ```shell
 mini-db shell --backup --delay 1 --output ./mybackup.out
@@ -93,7 +95,7 @@ There are just three commands types to play with MiniDB data store
 
 > NOTE: To update data, you can use SET, it will replace the previous value.
 
-The 2nd element of the command represents the **Key**, MiniDB-Shell doesnt't count for white spaces. Here's an example,
+The 2nd element of the command represents the **Key**, MiniDB-Shell doesn't count for white spaces in Key. Here's an example,
 
 ```shell
 $ SET MyMsg Secret message so saving it as a binary --binary
@@ -113,6 +115,9 @@ You can specify **data types** in the SET command, you need to put the type flag
 
 # MiniDB Client
 
-**MiniDB-Client** contains methods that programmatically interacts with a local or remote MiniDB-Server, and writes using TCP connection. More about the Client [https://github.com/ritwik310/mini-db/blob/master/client/README.md](https://github.com/ritwik310/mini-db/blob/master/client/README.md)
+**MiniDB-Client** contains methods that programmatically interacts with a local or remote MiniDB-Server, and writes using TCP connection.
 
-Read the API-Docs for Client [godoc.org/github.com/ritwik310/mini-db/client](https://godoc.org/github.com/ritwik310/mini-db/client)
+More about the Client [https://github.com/ritwik310/mini-db/blob/master/client/README.md](https://github.com/ritwik310/mini-db/blob/master/client/README.md)   
+Read the API-Docs for Client [https://godoc.org/github.com/ritwik310/mini-db/client](https://godoc.org/github.com/ritwik310/mini-db/client)
+
+# Happy Hacking ...

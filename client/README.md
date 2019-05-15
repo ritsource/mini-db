@@ -19,7 +19,7 @@ go get github.com/ritwik310/mini-db/client
 
 ### Start Server
 
-Start a TCP-Server using MiniDB-CLI, details about starting the **MiniDB-Server** and other Server-related options [here](https://github.com/ritwik310/mini-db)
+Start a TCP-Server using MiniDB-CLI, details about starting the **MiniDB-Server** and other Server-related options [here](https://github.com/ritwik310/mini-db#minidb-server)
 
 ```shell
 mini-db server --backup # --backup persists the data in the filesystem
@@ -61,4 +61,18 @@ func main() {
 
 # Documentation
 
-Read the API-Docs [godoc.org/github.com/ritwik310/mini-db/client](https://godoc.org/github.com/ritwik310/mini-db/client)
+Read the API-Docs [https://godoc.org/github.com/ritwik310/mini-db/client](https://godoc.org/github.com/ritwik310/mini-db/client)
+
+# Data Type Declaration
+
+**MiniDB** stores **key-value pairs**, and supports **3 types** of values - **String**, **Integer**, **Binary**. While inserting data through **Client** you can provide type in the **typ** argument in **Set** method. Example,
+
+```go
+resp0, err := mdb.Set("myname", "Ritwik Saha", "str") // Stores data as a String
+resp1, err := mdb.Set("myname", "100", "int") // Stores data as Integer
+resp2, err := mdb.Set("myname", "Ritwik Saha to be encoded", "bin") // Encodes the provided string value into binary
+```
+
+> NOTE: If provided "" in the type argement (no value), it will consider type to be a **String**
+
+# Happy Hacking ...
