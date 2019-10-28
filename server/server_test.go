@@ -3,8 +3,8 @@ package server_test
 import (
 	"testing"
 
-	"github.com/ritwik310/mini-db/server"
-	"github.com/ritwik310/mini-db/src"
+	"github.com/ritcrap/mini-db/server"
+	"github.com/ritcrap/mini-db/src"
 )
 
 func handleErr(t *testing.T, err error) {

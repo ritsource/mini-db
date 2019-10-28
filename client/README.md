@@ -1,10 +1,10 @@
 # MiniDB Client
 
-![GitHub](https://img.shields.io/github/license/ritwik310/mini-db.svg)
-![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/ritwik310/mini-db.svg)
-![Travis (.com)](https://img.shields.io/travis/com/ritwik310/mini-db.svg)
+![GitHub](https://img.shields.io/github/license/ritcrap/mini-db.svg)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/ritcrap/mini-db.svg)
+![Travis (.com)](https://img.shields.io/travis/com/ritcrap/mini-db.svg)
 
-**MiniDB-Client** contains methods that programmatically interacts with the [**MiniDB-Server**](https://github.com/ritwik310/mini-db/#mini-db).
+**MiniDB-Client** contains methods that programmatically interacts with the [**MiniDB-Server**](https://github.com/ritcrap/mini-db/#mini-db).
 
 # Quick start
 
@@ -13,13 +13,13 @@
 First, install MiniDB using and MiniDB Golang-client
 
 ```shell
-go get github.com/ritwik310/mini-db
-go get github.com/ritwik310/mini-db/client
+go get github.com/ritcrap/mini-db
+go get github.com/ritcrap/mini-db/client
 ```
 
 ### Start Server
 
-Start a TCP-Server using MiniDB-CLI, details about starting the **MiniDB-Server** and other Server-related options [here](https://github.com/ritwik310/mini-db#minidb-server)
+Start a TCP-Server using MiniDB-CLI, details about starting the **MiniDB-Server** and other Server-related options [here](https://github.com/ritcrap/mini-db#minidb-server)
 
 ```shell
 mini-db server --backup # --backup persists the data in the filesystem
@@ -34,7 +34,7 @@ package main
 
 import (
     "fmt"
-    "github.com/ritwik310/mini-db/client"
+    "github.com/ritcrap/mini-db/client"
 )
 
 func main() {
@@ -61,7 +61,7 @@ func main() {
 
 # Documentation
 
-Read the API-Docs [https://godoc.org/github.com/ritwik310/mini-db/client](https://godoc.org/github.com/ritwik310/mini-db/client)
+Read the API-Docs [https://godoc.org/github.com/ritcrap/mini-db/client](https://godoc.org/github.com/ritcrap/mini-db/client)
 
 # Data Type Declaration
 

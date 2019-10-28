@@ -1,8 +1,8 @@
 # MiniDB
 
-![GitHub](https://img.shields.io/github/license/ritwik310/mini-db.svg)
-![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/ritwik310/mini-db.svg)
-![Travis (.com)](https://img.shields.io/travis/com/ritwik310/mini-db.svg)
+![GitHub](https://img.shields.io/github/license/ritcrap/mini-db.svg)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/ritcrap/mini-db.svg)
+![Travis (.com)](https://img.shields.io/travis/com/ritcrap/mini-db.svg)
 
 MiniDB is a very simple **in-memory key-value store**, with persistent-storage as an option. ~~Somewhat like~~ Copy of Redis. The application contains an interactive **Shell** to run DB-commands, more about it [here](#minidb-shell). And also a **Golang client** for programmatic interactions remotely, more [here](#minidb-server).
 
@@ -14,7 +14,7 @@ Something About The App, -->
 
 # Data Types
 
-MiniDB stores **key-value pairs**, and supports **3 types** of values - **String**, **Integer**, **Binary**. To declare type while writing data using **MiniDB-Client** check out [this](https://github.com/ritwik310/mini-db/blob/master/client/README.md#data-type-declaration). And Type declaration in **MiniDB-Shell** has been explained [here](#commands)
+MiniDB stores **key-value pairs**, and supports **3 types** of values - **String**, **Integer**, **Binary**. To declare type while writing data using **MiniDB-Client** check out [this](https://github.com/ritcrap/mini-db/blob/master/client/README.md#data-type-declaration). And Type declaration in **MiniDB-Shell** has been explained [here](#commands)
 
 > NOTE: If no data-type arguement provided in **Client** or **Shell**, MiniDB will save **String type by default**.
 
@@ -23,13 +23,13 @@ MiniDB stores **key-value pairs**, and supports **3 types** of values - **String
 Install **MiniDB-Server** using,
 
 ```shell
-go get github.com/ritwik310/mini-db
+go get github.com/ritcrap/mini-db
 ```
 
 To install the **MiniDB Go-client** run,
 
 ```shell
-go get github.com/ritwik310/mini-db/client
+go get github.com/ritcrap/mini-db/client
 ```
 
 # MiniDB-Server
@@ -117,7 +117,7 @@ You can specify **data types** in the SET command, you need to put the type flag
 
 **MiniDB-Client** contains methods that programmatically interacts with a local or remote MiniDB-Server, and writes using TCP connection.
 
-More about the Client [https://github.com/ritwik310/mini-db/blob/master/client/README.md](https://github.com/ritwik310/mini-db/blob/master/client/README.md)   
-Read the API-Docs for Client [https://godoc.org/github.com/ritwik310/mini-db/client](https://godoc.org/github.com/ritwik310/mini-db/client)
+More about the Client [https://github.com/ritcrap/mini-db/blob/master/client/README.md](https://github.com/ritcrap/mini-db/blob/master/client/README.md)   
+Read the API-Docs for Client [https://godoc.org/github.com/ritcrap/mini-db/client](https://godoc.org/github.com/ritcrap/mini-db/client)
 
 # Happy Hacking ...

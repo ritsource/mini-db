@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/ritwik310/mini-db/src"
+	"github.com/ritcrap/mini-db/src"
 )
 
 // Store instance that conatins all the in-memory data

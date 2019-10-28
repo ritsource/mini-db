@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ritwik310/mini-db/src"
+	"github.com/ritcrap/mini-db/src"
 )
 
 func TestInMemoryStore(t *testing.T) {

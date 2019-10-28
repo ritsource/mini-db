@@ -9,8 +9,8 @@ import (
 	"io/ioutil"
 	"net"
 
-	"github.com/ritwik310/mini-db/shell"
-	"github.com/ritwik310/mini-db/src"
+	"github.com/ritcrap/mini-db/shell"
+	"github.com/ritcrap/mini-db/src"
 )
 
 // New returns a new Client, that contains Get, Set, and Delete function
@@ -50,8 +50,8 @@ func (c *Client) Get(key string) (map[string]interface{}, error) {
 // This method has three arguements, key, value and type
 // typ indicates the data type of value. By default its a string,
 // but it also supports integer and binary,
-// Read more about data types, https://github.com/ritwik310/mini-db#data-types
-// Read more about type declaration in client, https://github.com/ritwik310/mini-db/blob/master/client/README.md#data-type-declaration
+// Read more about data types, https://github.com/ritcrap/mini-db#data-types
+// Read more about type declaration in client, https://github.com/ritcrap/mini-db/blob/master/client/README.md#data-type-declaration
 func (c *Client) Set(key, val, typ string) (map[string]interface{}, error) {
 	// typ = 'str' for string (default, if provided "")
 	// typ = 'int' for integer

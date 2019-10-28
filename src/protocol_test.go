@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	server "github.com/ritwik310/mini-db/src"
+	server "github.com/ritcrap/mini-db/src"
 )
 
 func TestProtocolHandler(t *testing.T) {
