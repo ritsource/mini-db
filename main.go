@@ -1,6 +1,6 @@
 package main
 
-import "github.com/ritcrap/mini-db/cmd"
+import "github.com/ritsource/mini-db/cmd"
 
 func main() {
 	cmd.Execute()

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/ritcrap/mini-db/server"
+	"github.com/ritsource/mini-db/server"
 	"github.com/spf13/cobra"
 )
 

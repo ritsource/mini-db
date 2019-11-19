@@ -3,7 +3,7 @@ package shell_test
 import (
 	"testing"
 
-	"github.com/ritcrap/mini-db/shell"
+	"github.com/ritsource/mini-db/shell"
 )
 
 func TestFormatCmd(t *testing.T) {

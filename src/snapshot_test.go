@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ritcrap/mini-db/src"
+	"github.com/ritsource/mini-db/src"
 )
 
 func TestDataMarshalAndUnmarshal(t *testing.T) {

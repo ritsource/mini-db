@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/ritcrap/mini-db/client"
+	"github.com/ritsource/mini-db/client"
 )
 
 func main() {

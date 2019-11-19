@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ritcrap/mini-db/server"
-	"github.com/ritcrap/mini-db/src"
+	"github.com/ritsource/mini-db/server"
+	"github.com/ritsource/mini-db/src"
 )
 
 var store src.Store
